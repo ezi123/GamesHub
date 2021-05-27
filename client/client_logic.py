@@ -26,4 +26,4 @@ def processServerMessage(msg):
         if returnCode == '1':
             login_ui.closeLoginUI()
         else:
-            login_ui.popup_window(returnMsg)
+            login_ui.showLoginMsgInfo(returnMsg)

@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import ttk, messagebox
+from tkinter.messagebox import showinfo
 import client_logic
 
 loginWin = None
@@ -116,6 +117,9 @@ def closeRegisterUI():
     if registerWin != None:
         registerWin.destroy()
 
+def showRegisterMsgInfo(msg):
+    showinfo("Register", msg)
+
 # ---------------------------------------------------------------------------End Register Window-----------------------------------
 
 
@@ -191,13 +195,7 @@ def closeLoginUI():
         loginWin.destroy()
         loginWin = None
 
-def popup_window(msg):
-    msg1 = msg
-#    window = Tk.Toplevel()
+def showLoginMsgInfo(msg):
+    showinfo("Login", msg)
 
-#    label = Tk.Label(window, text=msg)
-#    label.pack(fill='x', padx=50, pady=5)
-
-#    button_close = Tk.Button(window, text="Close", command=window.destroy)
-#    button_close.pack(fill='x')
 # -------------------------------------------------------------------------- End Login Window ---------------------------------------------------
