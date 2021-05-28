@@ -1,6 +1,6 @@
 import socket
 import threading
-import client_logic
+from client import client_logic
 
 client_socket = None
 

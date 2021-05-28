@@ -1,5 +1,4 @@
-import client_comm
-import login_ui
+from client import client_comm, login_ui, handleClientC4, c4client
 
 clientId = "XX"
 
@@ -9,11 +8,11 @@ def formatServerMsg(operation, operationData):
     # Operation, Username, Game, Message
     global clientId
     outStr = operation + "##" + clientId + "##" + operationData
+    client_comm.sendToServer(outStr)
     return outStr
 
 def bl_login(outStr):
     sendStr = formatServerMsg("login", outStr)
-    client_comm.sendToServer(sendStr)
 
 #incoming messages
 def processServerMessage(msg):
@@ -25,5 +24,15 @@ def processServerMessage(msg):
         returnMsg = split[2]
         if returnCode == '1':
             login_ui.closeLoginUI()
+            handleClientC4.run()
         else:
             login_ui.showLoginMsgInfo(returnMsg)
+
+    elif message_type == "inqueue":
+        return
+
+
+    elif message_type == "move" or message_type == "winner" or message_type == "draw":
+        handleClientC4.processC4ServerMessage(msg)
+
+

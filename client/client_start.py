@@ -1,6 +1,4 @@
-import client_comm
-import client_logic
-import login_ui
+from client import client_comm, client_logic, login_ui
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -9,10 +7,12 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # connect to the server
+    # connect to the serverz
     client_comm.start_client_comm()
 
     # open the login UI
     login_ui.openLoginUI()
+
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

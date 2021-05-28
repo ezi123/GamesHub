@@ -1,8 +1,8 @@
 import socket, threading, os
 from threading import Thread, Lock
-import server_logic
+from server import server_logic
 
-
+waitList = []
 class ClientThread(threading.Thread):
     global users
     clientAddress = None
@@ -48,12 +48,15 @@ class ClientThread(threading.Thread):
 
             self.csocket.send(bytes(msg, 'UTF-8'))
         print("Client at ", self.clientAddress, " disconnected...")
+        
 """
+
 
 def startServer():
     LOCALHOST = "127.0.0.1"
     PORT = 5050
     users = {}
+    waitList = []
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -69,3 +72,15 @@ def startServer():
         clientsock, clientAddress = server.accept()
         newthread = ClientThread(clientAddress, clientsock)
         newthread.start()
+
+def sendToClient(client_socket, message):
+    client_socket.send(bytes(message, 'utf-8'))
+
+def getWaitList():
+    global waitList
+    return waitList
+
+
+def setWaitList(setWaitList):
+    global waitList
+    waitList = setWaitList

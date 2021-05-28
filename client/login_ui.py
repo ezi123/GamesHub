@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import ttk, messagebox
 from tkinter.messagebox import showinfo
-import client_logic
+from client import client_logic
 
 loginWin = None
 registerWin = None
@@ -191,9 +191,9 @@ def openLoginUI():
 
 def closeLoginUI():
     global loginWin
-    if loginWin != None:
-        loginWin.destroy()
-        loginWin = None
+    # if loginWin != None:
+        # loginWin.destroy()
+        # loginWin = None
 
 def showLoginMsgInfo(msg):
     showinfo("Login", msg)
