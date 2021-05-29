@@ -1,16 +1,11 @@
 import socket
 from threading import Thread
-import time
 from client import client_logic, c4client, client_comm
 
 def run():
 
     newBoard = launchC4(1)
     newBoard.start()
-
-    msg = "startGame"
-    client_logic.formatServerMsg(msg, "")
-
 
 
 def processC4ServerMessage(servResp):
@@ -48,7 +43,8 @@ class launchC4(Thread):
         print(self.myTurn)
         c4client.game_initiating_window()
 
-
+        msg = "startGame"
+        client_logic.formatServerMsg(msg, "")
 
         while True:
             move = c4client.check_client_activity()

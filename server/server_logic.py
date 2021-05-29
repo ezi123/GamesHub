@@ -1,5 +1,6 @@
 from server import db, server_comm, handleServerC4
 import random
+import time
 
 
 def parse_client_msg(client_socket, client_message):
@@ -81,6 +82,8 @@ def waitForGame(client_socket):
 
         newThread = handleServerC4.c4ServerClass(firstUser, client_socket, firstP1)
         newThread.start()
+
+        time.sleep(3)
 
         if firstP1 == "1":
             formatAndSend(firstUser, "startgame", "0")
