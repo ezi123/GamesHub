@@ -1,23 +1,17 @@
-from tkinter import *
-from PIL import ImageTk, Image
-from tkinter import ttk, messagebox
-from tkinter.messagebox import showinfo
+"""
+This file handles the login and signup UI and functionality
+"""
 from client import client_logic
-import re
+from tkinter import *
+from tkinter import messagebox
+from PIL import ImageTk, Image
 
-loginWin = None
+login_window = None
 signupWin = None
 
-# ---------------------------------------------------------------Login Function --------------------------------------
-def close():
-    global loginWin
-    loginWin.destroy()
 
+# Signup 
 
-# ---------------------------------------------------------------End Login Function ---------------------------------
-# ----------------------------------------------------------- Signup Window --------------------------------------------------
-
-    # signup database connect
 def signup():
     # Make a regular expression
     # for validating an Email
@@ -35,28 +29,26 @@ def signup():
         messagebox.showerror("Error", "All Fields Are Required", parent=signupWin)
     elif password != very_pass:
         messagebox.showerror("Error", "Password & Confirm Password Should Be Same", parent=signupWin)
-    elif re.search(regex, email) == None:
+    elif re.search(regex, email) is None:
         messagebox.showerror("Error", "Please type a valid email address", parent=signupWin)
     else:
         try:
-            userData = first_name + "##" + last_name + "##" + user_name + "##" + email + "##" + password
-            client_logic.bl_signup(userData)
+            user_data = first_name + "##" + last_name + "##" + user_name + "##" + email + "##" + password
+            client_logic.bl_signup(user_data)
 
         except Exception as es:
             messagebox.showerror("Error", f"Error Dui to : {str(es)}", parent=signupWin)
 
 
-# start register Window
-def openRegisterUI():
+# start signup window
+def open_signup_ui():
     global signupWin
     signupWin = Tk()
     signupWin.title("GameHub - Register")
     signupWin.maxsize(width=430, height=360)
     signupWin.minsize(width=430, height=360)
 
-    # bg color
     bg_color = "DeepSkyBlue2"
-    fg_color = "#383a39"
     signupWin.configure(background=bg_color)
 
     # heading label
@@ -116,93 +108,93 @@ def openRegisterUI():
     btn_login = Button(signupWin, text="Close", font='Verdana 10 bold', command=signupWin.destroy)
     btn_login.place(x=320, y=310)
 
-#    signupWin.bind('<Return>', signup)
+    #    signupWin.bind('<Return>', signup)
 
     signupWin.mainloop()
 
-def closeSignupUI():
+
+def close_signup_ui():
     global signupWin
     messagebox.showinfo("Success", "Signup successfully!", parent=signupWin)
-    if signupWin != None:
+    if signupWin is not None:
         signupWin.destroy()
 
-def showSignupMsgInfo(msg):
+
+def show_signup_msg_info(msg):
     global signupWin
     messagebox.showinfo("Error", msg, parent=signupWin)
 
-# ---------------------------------------------------------------------------End Register Window-----------------------------------
 
-
-# ------------------------------------------------------------ Login Window -----------------------------------------
-
+# login window
 
 def login():
-    global loginWin
+    global login_window
 
-    username = loginWin.userentry.get()
-    password = loginWin.passentry.get()
+    username = login_window.userentry.get()
+    password = login_window.passentry.get()
     if username == "" or password == "":
         messagebox.showerror("Error", "Enter User Name And Password")
     else:
-        userData = username + "##" + password
-        client_logic.bl_login(userData)
-        return ("login", username, password)
+        user_data = username + "##" + password
+        client_logic.bl_login(user_data)
+        return "login", username, password
 
 
-def openLoginUI():
-    global loginWin
-    
-    loginWin = Tk()
+def open_login_ui():
+    global login_window
 
-    # app title
-    loginWin.title("GameHub - Login")
+    login_window = Tk()
 
-    # bg color
+    login_window.title("GameHub - Login")
+
     bg_color = "DeepSkyBlue2"
-    fg_color = "#383a39"
-    loginWin.configure(background=bg_color)
+    login_window.configure(background=bg_color)
 
     # window size
-    loginWin.maxsize(width=430, height=380)
-    loginWin.minsize(width=430, height=380)
+    login_window.maxsize(width=430, height=380)
+    login_window.minsize(width=430, height=380)
 
     photo = ImageTk.PhotoImage(Image.open("../res/c4_cover_small.jpeg"))
-    Label(loginWin, image=photo).grid(rowspan=3, columnspan=5, row=0, column=0)
+    Label(login_window, image=photo).grid(rowspan=3, columnspan=5, row=0, column=0)
 
-    username = Label(loginWin, text="User Name :", font='Verdana 10 bold', bg=bg_color)
+    username = Label(login_window, text="User Name :", font='Verdana 10 bold', bg=bg_color)
     username.place(x=60, y=260)
 
-    userpass = Label(loginWin, text="Password :", font='Verdana 10 bold', bg=bg_color)
+    userpass = Label(login_window, text="Password :", font='Verdana 10 bold', bg=bg_color)
     userpass.place(x=60, y=300)
 
-    # Entry Box
+    # Entry Boxes
     user_name = StringVar()
     password = StringVar()
 
-    loginWin.userentry = Entry(loginWin, width=35, textvariable=user_name)
-    loginWin.userentry.focus()
-    loginWin.userentry.place(x=170, y=260)
+    login_window.userentry = Entry(login_window, width=35, textvariable=user_name)
+    login_window.userentry.focus()
+    login_window.userentry.place(x=170, y=260)
 
-    loginWin.passentry = Entry(loginWin, width=35, show="*", textvariable=password)
-    loginWin.passentry.place(x=170, y=300)
+    login_window.passentry = Entry(login_window, width=35, show="*", textvariable=password)
+    login_window.passentry.place(x=170, y=300)
 
     # button login
-    btn_login = Button(loginWin, text="Login", font='Verdana 10 bold', command=login)
+    btn_login = Button(login_window, text="Login", font='Verdana 10 bold', command=login)
     btn_login.place(x=260, y=340)
 
     # signup button
-    sign_up_btn = Button(loginWin, text="Signup", font='Verdana 10 bold', command=openRegisterUI)
+    sign_up_btn = Button(login_window, text="Signup", font='Verdana 10 bold', command=open_signup_ui)
     sign_up_btn.place(x=320, y=340)
 
-#    loginWin.bind('<Return>', login)
+    login_window.mainloop()
 
-    loginWin.mainloop()
 
-def closeLoginUI():
-    global loginWin
-    if loginWin != None:
-         loginWin.withdraw()
+def close_login_ui():
+    global login_window
+    if login_window is not None:
+        login_window.withdraw()
 
-def showLoginMsgInfo(msg):
-    global loginWin
-    messagebox.showinfo("Error", msg, parent=loginWin)
+
+def show_login_msg_info(msg):
+    global login_window
+    messagebox.showinfo("Error", msg, parent=login_window)
+
+#general popuse messagebox
+def show_message_box(title, message):
+    messagebox.showerror(title, message)

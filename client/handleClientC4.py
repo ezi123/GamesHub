@@ -1,33 +1,8 @@
-import socket
 from threading import Thread
-from client import client_logic, c4client, client_comm
-
-def run():
-
-    newBoard = launchC4(1)
-    newBoard.start()
+from client import client_logic, c4client
 
 
-def processC4ServerMessage(servResp):
-
-    split = servResp.split("##")
-    split[0] = split[0].lower()
-
-
-
-
-    if split[0] == "win":
-        print("You win!!!")
-    elif split[0] == "lose":
-        print("You lose :(")
-    elif split[0] == "draw":
-        print("It's a draw!")
-
-    elif split[0] == "move":
-        c4client.set_player_move(split[1])
-
-
-class launchC4(Thread):
+class LaunchC4(Thread):
 
     def __init__(self, firstTurn):
         Thread.__init__(self)
@@ -44,10 +19,30 @@ class launchC4(Thread):
         c4client.game_initiating_window()
 
         msg = "startGame"
-        client_logic.formatServerMsg(msg, "")
+        client_logic.formats_server_msg(msg, "")
 
         while True:
             move = c4client.check_client_activity()
             move = str(move)
             print("sending move: " + move)
-            client_logic.formatServerMsg("move", move)
+            client_logic.formats_server_msg("move", move)
+
+
+def start_client_comm_thread():
+    new_board = LaunchC4(1)
+    new_board.start()
+
+
+def process_c4_server_message(servResp):
+    split = servResp.split("##")
+    split[0] = split[0].lower()
+
+    if split[0] == "win":
+        print("You win!!!")
+    elif split[0] == "lose":
+        print("You lose :(")
+    elif split[0] == "draw":
+        print("It's a draw!")
+
+    elif split[0] == "move":
+        c4client.set_player_move(split[1])

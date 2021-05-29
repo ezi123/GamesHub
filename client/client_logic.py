@@ -1,51 +1,54 @@
-from client import client_comm, login_ui, handleClientC4, c4client
+from client import client_comm, client_ui, handleClientC4, c4client
 
-clientId = "XX"
+clientId = "1"
+
 
 # outgoing messages
-def formatServerMsg(operation, operationData):
+def formats_server_msg(operation, operation_data):
     # format the needed extra information
     # Operation, Username, Game, Message
     global clientId
-    outStr = operation + "##" + clientId + "##" + operationData
-    client_comm.sendToServer(outStr)
-    return outStr
+    out_str = operation + "##" + clientId + "##" + operation_data
+    client_comm.send_to_server(out_str)
+    return out_str
 
-def bl_login(outStr):
-    sendStr = formatServerMsg("login", outStr)
 
-def bl_signup(outStr):
-    sendStr = formatServerMsg("signup", outStr)
+def bl_login(out_str):
+    formats_server_msg("login", out_str)
 
-#incoming messages
-def processServerMessage(msg):
+
+def bl_signup(out_str):
+    formats_server_msg("signup", out_str)
+
+
+# incoming messages
+def process_server_message(msg):
     split = msg.split("##")
     message_type = split[0].lower()
 
     if message_type == "login":
-        returnCode = split[1]
-        returnMsg = split[2]
-        if returnCode == '1':
-            login_ui.closeLoginUI()
-            handleClientC4.run()
+        return_code = split[1]
+        return_msg = split[2]
+        if return_code == '1':
+            client_ui.close_login_ui()
+            handleClientC4.start_client_comm_thread()
         else:
-            login_ui.showLoginMsgInfo(returnMsg)
+            client_ui.show_login_msg_info(return_msg)
 
     elif message_type == "signup":
-        returnCode = split[1]
-        returnMsg = split[2]
-        if returnCode == '1':
-            login_ui.closeSignupUI()
+        return_code = split[1]
+        return_msg = split[2]
+        if return_code == '1':
+            client_ui.close_signup_ui()
         else:
-            login_ui.showSignupMsgInfo(returnMsg)
+            client_ui.show_signup_msg_info(return_msg)
 
     elif message_type == "inqueue":
         c4client.set_message("Waiting for second player to connect...")
         return
 
     elif message_type == "move" or message_type == "winner" or message_type == "draw":
-        handleClientC4.processC4ServerMessage(msg)
+        handleClientC4.process_c4_server_message(msg)
 
     elif message_type == "turn":
         c4client.set_turn(split[1])
-
