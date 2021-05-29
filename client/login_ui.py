@@ -201,7 +201,7 @@ def openLoginUI():
 def closeLoginUI():
     global loginWin
     if loginWin != None:
-         loginWin.destroy()
+         loginWin.withdraw()
 
 def showLoginMsgInfo(msg):
     global loginWin

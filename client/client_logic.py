@@ -26,7 +26,7 @@ def processServerMessage(msg):
         returnCode = split[1]
         returnMsg = split[2]
         if returnCode == '1':
-#            login_ui.closeLoginUI()
+            login_ui.closeLoginUI()
             handleClientC4.run()
         else:
             login_ui.showLoginMsgInfo(returnMsg)
@@ -41,7 +41,6 @@ def processServerMessage(msg):
 
     elif message_type == "inqueue":
         c4client.set_message("Waiting for second player to connect...")
-        c4client.draw_status()
         return
 
     elif message_type == "move" or message_type == "winner" or message_type == "draw":
