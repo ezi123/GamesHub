@@ -30,10 +30,13 @@ class ClientThread(threading.Thread):
         while True:
             data = self.clientSocket.recv(2048)
             msg = data.decode('utf-8')
-            if msg == 'bye':
-                break
             print("from client: ", msg)
+
             retVal = server_logic.parse_client_msg(self.clientSocket, msg)
+
+            if 'startGame' in msg:
+                break
+
 
 
 #            self.clientSocket.send(bytes(retVal, "utf-8"))
