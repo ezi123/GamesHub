@@ -26,7 +26,7 @@ def processServerMessage(msg):
         returnCode = split[1]
         returnMsg = split[2]
         if returnCode == '1':
-            login_ui.closeLoginUI()
+#            login_ui.closeLoginUI()
             handleClientC4.run()
         else:
             login_ui.showLoginMsgInfo(returnMsg)

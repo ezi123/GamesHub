@@ -37,7 +37,7 @@ def create_user(userData):
     :param userData:
     :return: user id
     """
-    sql = ''' INSERT INTO users(firstName, lastName, userName, email, password)
+    sql = ''' INSERT INTO users(firstName, lastName, userName, password, email)
               VALUES(?,?,?,?,?) '''
 
     cur.execute(sql, userData)

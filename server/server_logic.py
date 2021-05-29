@@ -15,10 +15,10 @@ def parse_client_msg(client_socket, client_message):
         userData = (firstName, lastName, username, password, email)
 
         validUser = db.create_user(userData)
-        if validUser != -1: # userName exists
-            signupStatus = 1
-        else:
+        if validUser == -1: # userName exists
             signupStatus = -1
+        else:
+            signupStatus = 1
 
         sendSignupStatus(client_socket, signupStatus)
         return username

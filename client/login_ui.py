@@ -200,10 +200,9 @@ def openLoginUI():
 
 def closeLoginUI():
     global loginWin
-    # if loginWin != None:
-        # loginWin.destroy()
-        # loginWin = None
+    if loginWin != None:
+         loginWin.destroy()
 
 def showLoginMsgInfo(msg):
-    showinfo("Login", msg)
-
+    global loginWin
+    messagebox.showinfo("Error", msg, parent=loginWin)
