@@ -10,7 +10,7 @@ board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '
          [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 screen = ""
 # Set turn yellow/red
-turn = ''
+turn = 'yellow'
 msg = ''
 assigned = False
 
