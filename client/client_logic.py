@@ -14,6 +14,9 @@ def formatServerMsg(operation, operationData):
 def bl_login(outStr):
     sendStr = formatServerMsg("login", outStr)
 
+def bl_signup(outStr):
+    sendStr = formatServerMsg("signup", outStr)
+
 #incoming messages
 def processServerMessage(msg):
     split = msg.split("##")
@@ -27,6 +30,14 @@ def processServerMessage(msg):
             handleClientC4.run()
         else:
             login_ui.showLoginMsgInfo(returnMsg)
+
+    elif message_type == "signup":
+        returnCode = split[1]
+        returnMsg = split[2]
+        if returnCode == '1':
+            login_ui.closeSignupUI()
+        else:
+            login_ui.showSignupMsgInfo(returnMsg)
 
     elif message_type == "inqueue":
         c4client.set_message("Waiting for second player to connect...")

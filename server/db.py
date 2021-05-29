@@ -24,11 +24,11 @@ def create_user(userData):
 
     # check if the userName is already taken
     cur = conn.cursor()
-    userExists = cur.execute("SELECT COUNT(*) FROM users WHERE userName=?", (userData[0],))
+    userExists = cur.execute("SELECT COUNT(*) FROM users WHERE userName=?", (userData[2],))
 
     result = cur.fetchone()[0]
     if result != 0:
-        print('UserName Exists!')
+        print('userName Exists!')
         return -1 # Error creating the user
 
     """
@@ -37,8 +37,8 @@ def create_user(userData):
     :param userData:
     :return: user id
     """
-    sql = ''' INSERT INTO users(userName,password,email)
-              VALUES(?,?,?) '''
+    sql = ''' INSERT INTO users(firstName, lastName, userName, email, password)
+              VALUES(?,?,?,?,?) '''
 
     cur.execute(sql, userData)
     conn.commit()

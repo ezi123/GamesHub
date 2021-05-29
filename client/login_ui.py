@@ -3,9 +3,10 @@ from PIL import ImageTk, Image
 from tkinter import ttk, messagebox
 from tkinter.messagebox import showinfo
 from client import client_logic
+import re
 
 loginWin = None
-registerWin = None
+signupWin = None
 
 # ---------------------------------------------------------------Login Function --------------------------------------
 def close():
@@ -16,118 +17,124 @@ def close():
 # ---------------------------------------------------------------End Login Function ---------------------------------
 # ----------------------------------------------------------- Signup Window --------------------------------------------------
 
-def signup():
     # signup database connect
-    def register():
-        if first_name.get() == "" or last_name.get() == "" or user_name.get() == "" or password.get() == "" or very_pass.get() == "":
-            messagebox.showerror("Error", "All Fields Are Required", parent=winsignup)
-        elif password.get() != very_pass.get():
-            messagebox.showerror("Error", "Password & Confirm Password Should Be Same", parent=winsignup)
-        else:
-            try:
-                con = pymysql.connect(host="localhost", user="root", password="", database="docterapp")
-                cur = con.cursor()
-                cur.execute("select * from user_information where username=%s", user_name.get())
-                row = cur.fetchone()
-                if row != None:
-                    messagebox.showerror("Error", "User Name Already Exits", parent=winsignup)
-                else:
-                    cur.execute(
-                        "insert into user_information(first_name,last_name,age,gender,city,address,username,password) values(%s,%s,%s,%s,%s,%s,%s,%s)",
-                        (
-                            first_name.get(),
-                            last_name.get(),
-                            user_name.get(),
-                            password.get()
-                        ))
-                    con.commit()
-                    con.close()
-                    messagebox.showinfo("Success", "Ragistration Successfull", parent=winsignup)
+def signup():
+    # Make a regular expression
+    # for validating an Email
+    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
 
-            except Exception as es:
-                messagebox.showerror("Error", f"Error Dui to : {str(es)}", parent=winsignup)
+    global signupWin
+    first_name = signupWin.first_name.get()
+    last_name = signupWin.last_name.get()
+    user_name = signupWin.user_name.get()
+    email = signupWin.email.get()
+    password = signupWin.password.get()
+    very_pass = signupWin.very_pass.get()
+
+    if first_name == "" or last_name == "" or user_name == "" or email == "" or password == "" or very_pass == "":
+        messagebox.showerror("Error", "All Fields Are Required", parent=signupWin)
+    elif password != very_pass:
+        messagebox.showerror("Error", "Password & Confirm Password Should Be Same", parent=signupWin)
+    elif re.search(regex, email) == None:
+        messagebox.showerror("Error", "Please type a valid email address", parent=signupWin)
+    else:
+        try:
+            userData = first_name + "##" + last_name + "##" + user_name + "##" + email + "##" + password
+            client_logic.bl_signup(userData)
+
+        except Exception as es:
+            messagebox.showerror("Error", f"Error Dui to : {str(es)}", parent=signupWin)
 
 
 # start register Window
 def openRegisterUI():
-    global registerWin
-    registerWin = Tk()
-    registerWin.title("GameHub - Register")
-    registerWin.maxsize(width=430, height=340)
-    registerWin.minsize(width=430, height=340)
+    global signupWin
+    signupWin = Tk()
+    signupWin.title("GameHub - Register")
+    signupWin.maxsize(width=430, height=360)
+    signupWin.minsize(width=430, height=360)
 
     # bg color
     bg_color = "DeepSkyBlue2"
     fg_color = "#383a39"
-    registerWin.configure(background=bg_color)
+    signupWin.configure(background=bg_color)
 
     # heading label
-    heading = Label(registerWin, text="Register", font='Verdana 20 bold', bg=bg_color)
+    heading = Label(signupWin, text="Register", font='Verdana 20 bold', bg=bg_color)
     heading.place(x=40, y=25)
 
     # form data label
-    first_name = Label(registerWin, text="First Name :", font='Verdana 10 bold', bg=bg_color)
+    first_name = Label(signupWin, text="First Name :", font='Verdana 10 bold', bg=bg_color)
     first_name.place(x=40, y=70)
 
-    last_name = Label(registerWin, text="Last Name :", font='Verdana 10 bold', bg=bg_color)
+    last_name = Label(signupWin, text="Last Name :", font='Verdana 10 bold', bg=bg_color)
     last_name.place(x=40, y=110)
 
-    user_name = Label(registerWin, text="User Name :", font='Verdana 10 bold', bg=bg_color)
+    user_name = Label(signupWin, text="User Name :", font='Verdana 10 bold', bg=bg_color)
     user_name.place(x=40, y=150)
 
-    password = Label(registerWin, text="Password :", font='Verdana 10 bold', bg=bg_color)
-    password.place(x=40, y=190)
+    user_name = Label(signupWin, text="Email :", font='Verdana 10 bold', bg=bg_color)
+    user_name.place(x=40, y=190)
 
-    very_pass = Label(registerWin, text="Verify Password:", font='Verdana 10 bold', bg=bg_color)
-    very_pass.place(x=40, y=230)
+    password = Label(signupWin, text="Password :", font='Verdana 10 bold', bg=bg_color)
+    password.place(x=40, y=230)
+
+    very_pass = Label(signupWin, text="Verify Password:", font='Verdana 10 bold', bg=bg_color)
+    very_pass.place(x=40, y=270)
 
     # Entry Box ------------------------------------------------------------------
     first_name = StringVar()
     last_name = StringVar()
     user_name = StringVar()
+    email = StringVar()
     password = StringVar()
     very_pass = StringVar()
 
-    first_name = Entry(registerWin, width=25, textvariable=first_name)
-    first_name.place(x=150, y=65)
+    signupWin.first_name = Entry(signupWin, width=30, textvariable=first_name)
+    signupWin.first_name.focus()
+    signupWin.first_name.place(x=190, y=70)
 
-    last_name = Entry(registerWin, width=25, textvariable=last_name)
-    last_name.place(x=150, y=105)
+    signupWin.last_name = Entry(signupWin, width=30, textvariable=last_name)
+    signupWin.last_name.place(x=190, y=110)
 
-    user_name = Entry(registerWin, width=25, textvariable=user_name)
-    user_name.place(x=150, y=145)
+    signupWin.user_name = Entry(signupWin, width=30, textvariable=user_name)
+    signupWin.user_name.place(x=190, y=150)
 
-    password = Entry(registerWin, width=25, show="*", textvariable=password)
-    password.place(x=150, y=185)
+    signupWin.email = Entry(signupWin, width=30, textvariable=email)
+    signupWin.email.place(x=190, y=190)
 
-    very_pass = Entry(registerWin, width=25, show="*", textvariable=very_pass)
-    very_pass.place(x=150, y=225)
+    signupWin.password = Entry(signupWin, width=30, show="*", textvariable=password)
+    signupWin.password.place(x=190, y=230)
+
+    signupWin.very_pass = Entry(signupWin, width=30, show="*", textvariable=very_pass)
+    signupWin.very_pass.place(x=190, y=270)
 
     # button register and login
-    btn_signup = Button(registerWin, text="Register", font='Verdana 10 bold', command=register)
-    btn_signup.place(x=290, y=270)
+    btn_signup = Button(signupWin, text="Register", font='Verdana 10 bold', command=signup)
+    btn_signup.place(x=240, y=310)
 
-    btn_login = Button(registerWin, text="Login", font='Verdana 10 bold', command=switchLogin)
-    btn_login.place(x=350, y=270)
+    btn_login = Button(signupWin, text="Close", font='Verdana 10 bold', command=signupWin.destroy)
+    btn_login.place(x=320, y=310)
 
-    registerWin.mainloop()
+#    signupWin.bind('<Return>', signup)
 
-def closeRegisterUI():
-    global registerWin
-    if registerWin != None:
-        registerWin.destroy()
+    signupWin.mainloop()
 
-def showRegisterMsgInfo(msg):
-    showinfo("Register", msg)
+def closeSignupUI():
+    global signupWin
+    messagebox.showinfo("Success", "Signup successfully!", parent=signupWin)
+    if signupWin != None:
+        signupWin.destroy()
+
+def showSignupMsgInfo(msg):
+    global signupWin
+    messagebox.showinfo("Error", msg, parent=signupWin)
 
 # ---------------------------------------------------------------------------End Register Window-----------------------------------
 
 
 # ------------------------------------------------------------ Login Window -----------------------------------------
-userentry = None
-passentry = None
-username = ""
-password = ""
+
 
 def login():
     global loginWin
@@ -184,8 +191,10 @@ def openLoginUI():
     btn_login.place(x=260, y=340)
 
     # signup button
-    sign_up_btn = Button(loginWin, text="Signup", font='Verdana 10 bold', command=signup)
+    sign_up_btn = Button(loginWin, text="Signup", font='Verdana 10 bold', command=openRegisterUI)
     sign_up_btn.place(x=320, y=340)
+
+#    loginWin.bind('<Return>', login)
 
     loginWin.mainloop()
 
@@ -198,4 +207,3 @@ def closeLoginUI():
 def showLoginMsgInfo(msg):
     showinfo("Login", msg)
 
-# -------------------------------------------------------------------------- End Login Window ---------------------------------------------------

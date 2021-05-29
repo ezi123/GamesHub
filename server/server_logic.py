@@ -6,13 +6,21 @@ def parse_client_msg(client_socket, client_message):
     split = client_message.split("##")
     message_type = split[0].lower()
 
-    if message_type == "register":
-        username = split[1]
-        password = split[2]
-        email = split[3]
-        userData = (username, password, email)
+    if message_type == "signup":
+        firstName = split[2]
+        lastName = split[3]
+        username = split[4]
+        email = split[5]
+        password = split[6]
+        userData = (firstName, lastName, username, password, email)
 
-        db.create_user(userData)
+        validUser = db.create_user(userData)
+        if validUser != -1: # userName exists
+            signupStatus = 1
+        else:
+            signupStatus = -1
+
+        sendSignupStatus(client_socket, signupStatus)
         return username
 
     if message_type == "login":
@@ -40,6 +48,15 @@ def sendLoginStatus(socket, loginStatus):
     elif loginStatus == 1:
         msg = "Login successful!"
     sendMsg = "login##" + str(loginStatus) + "##" + msg
+    server_comm.sendToClient(socket, sendMsg)
+
+def sendSignupStatus(socket, signupStatus):
+    msg = ""
+    if signupStatus == -1:
+        msg = "Username already exists. Please try again."
+    elif signupStatus == 1:
+        msg = "Signup successful!"
+    sendMsg = "signup##" + str(signupStatus) + "##" + msg
     server_comm.sendToClient(socket, sendMsg)
 
 
