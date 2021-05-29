@@ -155,16 +155,20 @@ def get_player_move():
         if x < width / 7 * i:
             x = i
             break
-    return x
+    check = check_empty_tile(x)
+    if check[0]:
+        return x
+    else:
+        return None
 
 
 def check_empty_tile(move):
     move = int(move)
 
     for x in range(len(board)):
-        print(x)
-        print(move)
         if board[x][move - 1] == ' ':
+            print(x)
+            print(move - 1)
             return True, x
     return False
 
@@ -174,8 +178,8 @@ def set_player_move(move):
     added = False
     move = int(move)
     for x in range(len(board)):
-        if board[x][move] == ' ' and not added:
-            board[x][move] = turn
+        if not added:
+            board[x][move - 1] = turn
             added = True
 
     draw(move)
@@ -208,7 +212,9 @@ def check_client_activity():
                                 if turn != "red":
                                     continue
                                 move = get_player_move()
-                                return move
+                                print("Move is: " + str(move))
+                                if move != None:
+                                    return move
 
 
             elif done:

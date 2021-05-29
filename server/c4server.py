@@ -44,8 +44,8 @@ def set_player_move(move):
     added = False
     move = int(move)
     for x in range(len(board)):
-        if board[x][move] == ' ' and not added:
-            board[x][move] = turn
+        if not added:
+            board[x][move - 1] = turn
             added = True
 
 def check_game_end():
