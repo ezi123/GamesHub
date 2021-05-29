@@ -163,21 +163,21 @@ def openLoginUI():
     Label(loginWin, image=photo).grid(rowspan=3, columnspan=5, row=0, column=0)
 
     username = Label(loginWin, text="User Name :", font='Verdana 10 bold', bg=bg_color)
-    username.place(x=40, y=260)
+    username.place(x=60, y=260)
 
     userpass = Label(loginWin, text="Password :", font='Verdana 10 bold', bg=bg_color)
-    userpass.place(x=40, y=300)
+    userpass.place(x=60, y=300)
 
     # Entry Box
     user_name = StringVar()
     password = StringVar()
 
-    loginWin.userentry = Entry(loginWin, width=25, textvariable=user_name)
+    loginWin.userentry = Entry(loginWin, width=35, textvariable=user_name)
     loginWin.userentry.focus()
-    loginWin.userentry.place(x=120, y=255)
+    loginWin.userentry.place(x=170, y=260)
 
-    loginWin.passentry = Entry(loginWin, width=25, show="*", textvariable=password)
-    loginWin.passentry.place(x=120, y=295)
+    loginWin.passentry = Entry(loginWin, width=35, show="*", textvariable=password)
+    loginWin.passentry.place(x=170, y=300)
 
     # button login
     btn_login = Button(loginWin, text="Login", font='Verdana 10 bold', command=login)
@@ -185,7 +185,7 @@ def openLoginUI():
 
     # signup button
     sign_up_btn = Button(loginWin, text="Signup", font='Verdana 10 bold', command=signup)
-    sign_up_btn.place(x=310, y=340)
+    sign_up_btn.place(x=320, y=340)
 
     loginWin.mainloop()
 

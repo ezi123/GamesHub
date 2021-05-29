@@ -65,10 +65,10 @@ def start_client_comm():
     SERVER = "127.0.0.1"
     PORT = 5050
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((SERVER, PORT))
+#    client_socket.connect((SERVER, PORT))
 
-    newthread1 = ClientThread('1.1.1.1', client_socket)
-    newthread1.start()
+#    newthread1 = ClientThread('1.1.1.1', client_socket)
+#    newthread1.start()
 
 #    newthread = SocketHandler(client_socket)
 #    newthread.start()
