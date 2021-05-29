@@ -14,16 +14,18 @@ class c4ServerClass(Thread):
 
     def run(self):
 
-        rand = random.randint(0,1)
-        turn = rand
+#        rand = random.randint(0,1)
+#        turn = rand
+# for testing, first user runs first
+        turn = rand = 1
         if rand == 0:
             print("Sending Turn to player 1")
-            server_logic.formatAndSend(self.clientSocket1, "turn", "0")
-            server_logic.formatAndSend(self.clientSocket2, "turn", "1")
+            server_logic.formatAndSend(self.clientSocket1, "turn", "red")
+            server_logic.formatAndSend(self.clientSocket2, "turn", "yellow")
         else:
             print("Sending Turn to player 2")
-            server_logic.formatAndSend(self.clientSocket2, "turn", "0")
-            server_logic.formatAndSend(self.clientSocket1, "turn", "1")
+            server_logic.formatAndSend(self.clientSocket2, "turn", "red")
+            server_logic.formatAndSend(self.clientSocket1, "turn", "yellow")
 
         print("In handleServerC4")
         while True:
@@ -33,7 +35,7 @@ class c4ServerClass(Thread):
                 data = self.clientSocket2.recv(1024).decode('utf-8')
 
 
-            print(data)
+            print("Turn = " + turn + ". Data recieced: " + data)
             split = data.split("##")
             print(split[0])
             if split[0] == "move":

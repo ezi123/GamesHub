@@ -29,10 +29,13 @@ def processServerMessage(msg):
             login_ui.showLoginMsgInfo(returnMsg)
 
     elif message_type == "inqueue":
+        c4client.set_message("Waiting for second player to connect...")
+        c4client.draw_status()
         return
-
 
     elif message_type == "move" or message_type == "winner" or message_type == "draw":
         handleClientC4.processC4ServerMessage(msg)
 
+    elif message_type == "turn":
+        c4client.set_turn(split[1])
 

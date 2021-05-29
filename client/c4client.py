@@ -54,7 +54,7 @@ def start_pg():
 
 
 def game_initiating_window():
-    
+    global screen
     # Puts the cover image over the screen
     # screen.blit(initiating_window, (0,0))
     # pg.display.update()
@@ -73,10 +73,7 @@ def game_initiating_window():
 
 
 def draw_status():
-    global draw, turn, msg, assigned
-
-
-    print("Hi")
+    global draw, turn, msg, assigned, screen
 
     if assigned:
         if winner is None:
@@ -91,7 +88,7 @@ def draw_status():
 
     if not assigned:
         message = msg
-        assigned = True
+#        assigned = True
 
 
     # setting a font object
@@ -108,7 +105,7 @@ def draw_status():
 
 
 def draw(row, col):
-    global board, turn
+    global board, turn, screen
 
     row = row - 1
     if row == 0:
@@ -224,10 +221,12 @@ def get_turn():
 
 def set_turn(setTurn):
     global turn
-    print(setTurn)
+    print("Client's turn is set to: " + setTurn)
     turn = setTurn
+
 
 
 def set_message(setMessage):
     global msg
     msg = setMessage
+#    draw_status()
