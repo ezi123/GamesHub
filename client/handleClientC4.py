@@ -45,4 +45,4 @@ def process_c4_server_message(servResp):
         print("It's a draw!")
 
     elif split[0] == "move":
-        c4client.set_player_move(split[1])
+        c4client.draw(split[1])

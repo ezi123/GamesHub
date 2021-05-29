@@ -110,6 +110,8 @@ def draw(row):
     check = check_empty_tile(row)
     col = check[1]
 
+
+    row = int(row)
     row = row - 1
     if row == 0:
         posx = 15
@@ -145,6 +147,8 @@ def draw(row):
         screen.blit(yellow_img, (posx, posy))
 
     pg.display.update()
+
+    set_player_move(row, col)
     return
 
 
@@ -173,16 +177,15 @@ def check_empty_tile(move):
     return False
 
 
-def set_player_move(move):
+def set_player_move(col, row):
     global turn
     added = False
-    move = int(move)
-    for x in range(len(board)):
-        if not added:
-            board[x][move - 1] = turn
-            added = True
+    col = int(col)
+    row = int(row)
 
-    draw(move)
+
+    board[row][col - 1] = turn
+
 
     if turn == "red":
         turn = "yellow"

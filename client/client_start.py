@@ -1,7 +1,7 @@
 from client import client_comm, client_ui
 
 if __name__ == '__main__':
-    # connect to the server
+    # connect to the serverx
     client_comm.start_client_comm()
 
     # open the login UI
