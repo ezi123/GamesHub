@@ -152,6 +152,10 @@ def get_player_move():
         if x < width / 7 * i:
             x = i
             break
+
+    check = check_empty_tile(x)
+    if check[0]:
+        draw(x, check[1])
     return x
 
 
@@ -174,6 +178,8 @@ def set_player_move(move):
         if board[x][move] == ' ' and not added:
             board[x][move] = turn
             added = True
+
+    draw()
 
     if turn == "red":
         turn = "yellow"
