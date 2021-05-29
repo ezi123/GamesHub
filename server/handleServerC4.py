@@ -66,3 +66,8 @@ class c4ServerClass(Thread):
                     self.clientSocket1.send(bytes("Draw", 'utf-8'))
                     self.clientSocket2.send(bytes("Draw", 'utf-8'))
                     break
+
+                if turn == 1:
+                    turn = 0
+                else:
+                    turn = 1
