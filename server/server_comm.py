@@ -3,6 +3,8 @@ from threading import Thread, Lock
 from server import server_logic
 
 waitList = []
+
+
 class ClientThread(threading.Thread):
     global users
     clientAddress = None
@@ -30,8 +32,10 @@ class ClientThread(threading.Thread):
             msg = data.decode('utf-8')
             if msg == 'bye':
                 break
-            print("from client", msg)
+            print("from client: ", msg)
             retVal = server_logic.parse_client_msg(self.clientSocket, msg)
+
+
 #            self.clientSocket.send(bytes(retVal, "utf-8"))
 
 """            if self.loggedIn is False:
@@ -73,8 +77,10 @@ def startServer():
         newthread = ClientThread(clientAddress, clientsock)
         newthread.start()
 
+
 def sendToClient(client_socket, message):
     client_socket.send(bytes(message, 'utf-8'))
+
 
 def getWaitList():
     global waitList

@@ -44,25 +44,29 @@ def parse_client_msg(client_socket, client_message):
 def sendLoginStatus(socket, loginStatus):
     msg = ""
     if loginStatus == -1:
-        msg = "Wrong username or password. Please try again."
+        msg = "-1##Wrong username or password. Please try again."
     elif loginStatus == 1:
-        msg = "Login successful!"
-    sendMsg = "login##" + str(loginStatus) + "##" + msg
-    server_comm.sendToClient(socket, sendMsg)
+        msg = "1##Login successful!"
+
+    formatAndSend(socket, "login", msg)
+#    sendMsg = "login##" + str(loginStatus) + "##" + msg
+#    server_comm.sendToClient(socket, sendMsg)
 
 def sendSignupStatus(socket, signupStatus):
     msg = ""
     if signupStatus == -1:
-        msg = "Username already exists. Please try again."
+        msg = "-1##Username already exists. Please try again."
     elif signupStatus == 1:
-        msg = "Signup successful!"
-    sendMsg = "signup##" + str(signupStatus) + "##" + msg
-    server_comm.sendToClient(socket, sendMsg)
+        msg = "1##Signup successful!"
+
+    formatAndSend(socket, "signup", msg)
+#    sendMsg = "signup##" + str(signupStatus) + "##" + msg
+#    server_comm.sendToClient(socket, sendMsg)
 
 
 def formatAndSend(socket, command, message):
-
     msg = command + "##" + message
+    print("Sent to client: " + msg)
     server_comm.sendToClient(socket, msg)
 
 

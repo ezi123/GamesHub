@@ -32,7 +32,7 @@ class ClientThread(threading.Thread):
             #        sys.exit()
             #      if msg == 'startgame':
             #          handleClientC4.run(self.csocket)
-            print("from server", msg)
+            print("from server: ", msg)
             client_logic.processServerMessage(msg)
 
 """            if self.loggedIn is False:

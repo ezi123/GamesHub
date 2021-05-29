@@ -35,13 +35,13 @@ class c4ServerClass(Thread):
                 data = self.clientSocket2.recv(1024).decode('utf-8')
 
 
-            print("Turn = " + turn + ". Data recieced: " + data)
+            print("Turn = " + str(turn) + ". Data recieced: " + data)
             split = data.split("##")
             print(split[0])
             if split[0] == "move":
-                c4server.set_player_move(split[1])
-                server_logic.formatAndSend(self.clientSocket1, "move", split[1])
-                server_logic.formatAndSend(self.clientSocket2, "move", split[1])
+                c4server.set_player_move(split[2])
+                server_logic.formatAndSend(self.clientSocket1, "move", split[2])
+                server_logic.formatAndSend(self.clientSocket2, "move", split[2])
                 winner = c4server.check_game_end()
 
                 if winner == "red":
