@@ -46,7 +46,6 @@ class launchC4(Thread):
     def run(self):
         c4client.start_pg()
         print(self.myTurn)
-        c4client.set_turn(self.myTurn)
         c4client.game_initiating_window()
 
 
