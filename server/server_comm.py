@@ -2,94 +2,71 @@ import socket, threading, os
 from threading import Thread, Lock
 from server import server_logic
 
-waitList = []
+wait_list = []
 
 
 class ClientThread(threading.Thread):
-    global users
-    clientAddress = None
-    clientSocket = None
+    client_address = None
+    client_socket = None
     clients = []
     lock = Lock()
     user = ""
 
-    def __init__(self, clientAddress, clientSocket):
-        self.clientAddress = clientAddress
-        self.clientSocket = clientSocket
+    def __init__(self, client_address, client_socket):
+        self.client_address = client_address
+        self.client_socket = client_socket
 
         threading.Thread.__init__(self)
-        print("New connection added: ", self.clientAddress)
-        ClientThread.clients.append(self.clientSocket)
+        print("New connection added: ", self.client_address)
+        ClientThread.clients.append(self.client_socket)
 
     #    def broadcast(self):
 
     def run(self):
-        self.loggedIn = False
-        print("Connection from : ", self.clientAddress)
+        print("Connection from : ", self.client_address)
 
         while True:
-            data = self.clientSocket.recv(2048)
+            data = self.client_socket.recv(2048)
             msg = data.decode('utf-8')
             print("from client: ", msg)
 
-            retVal = server_logic.parse_client_msg(self.clientSocket, msg)
+            server_logic.parse_client_msg(self.client_socket, msg)
 
+            # once the game starts. the communication is through the game class, so stop listening here
             if 'startGame' in msg:
                 break
 
 
+def start_server():
+    localhost = "127.0.0.1"
+    port = 5050
 
-#            self.clientSocket.send(bytes(retVal, "utf-8"))
-
-"""            if self.loggedIn is False:
-                self.user = server_logic.parse_client_msg(msg)
-                self.loggedIn = True
-                users[self.user] = self.clientSocket
-
-            else:
-                self.clientSocket.send(bytes('startGame', 'utf-8'))
-                otherUser = server_logic.parse_client_msg(msg)
-                otherSocket = users[otherUser]
-                otherSocket.send(bytes("startGame", 'utf-8'))
-                threading.Thread.__init__(self)
-
-            self.csocket.send(bytes(msg, 'UTF-8'))
-        print("Client at ", self.clientAddress, " disconnected...")
-        
-"""
-
-
-def startServer():
-    LOCALHOST = "127.0.0.1"
-    PORT = 5050
-    users = {}
-    waitList = []
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server.bind((LOCALHOST, PORT))
+        server.bind((localhost, port))
         print("Server started")
         print("Waiting for client request..")
     except socket.error as err:
         print('Unable to start server: ' + err.strerror)
-        os._exit(1)
+        os._exit()
 
     while True:
         server.listen(1)
-        clientsock, clientAddress = server.accept()
-        newthread = ClientThread(clientAddress, clientsock)
+        clientsock, client_address = server.accept()
+        newthread = ClientThread(client_address, clientsock)
         newthread.start()
 
 
-def sendToClient(client_socket, message):
+def send_to_client(client_socket, message):
     client_socket.send(bytes(message, 'utf-8'))
 
 
-def getWaitList():
-    global waitList
-    return waitList
+def get_wait_list():
+    global wait_list
+    return wait_list
 
 
-def setWaitList(setWaitList):
-    global waitList
-    waitList = setWaitList
+def set_wait_list(waiting_list):
+    global wait_list
+    wait_list = waiting_list

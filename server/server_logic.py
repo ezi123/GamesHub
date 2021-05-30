@@ -8,94 +8,94 @@ def parse_client_msg(client_socket, client_message):
     message_type = split[0].lower()
 
     if message_type == "signup":
-        firstName = split[2]
-        lastName = split[3]
+        first_name = split[2]
+        last_name = split[3]
         username = split[4]
         email = split[5]
         password = split[6]
-        userData = (firstName, lastName, username, password, email)
+        user_data = (first_name, last_name, username, password, email)
 
-        validUser = db.create_user(userData)
-        if validUser == -1: # userName exists
-            signupStatus = -1
+        valid_user = db.create_user(user_data)
+        if valid_user == -1:  # userName exists
+            signup_status = -1
         else:
-            signupStatus = 1
+            signup_status = 1
 
-        sendSignupStatus(client_socket, signupStatus)
+        send_signup_status(client_socket, signup_status)
         return username
 
     if message_type == "login":
         username = split[2]
         password = split[3]
 
-        loginUserData = (username, password)
-        validUser = db.validate_user(loginUserData)
-        if validUser == 1: # user exists
-            loginStatus = 1
+        login_user_data = (username, password)
+        valid_user = db.validate_user(login_user_data)
+        if valid_user == 1:  # user exists
+            login_status = 1
         else:
-            loginStatus = -1
+            login_status = -1
 
-        sendLoginStatus(client_socket, loginStatus)
+        send_login_status(client_socket, login_status)
         return
 
     if message_type == "startgame":
-        waitForGame(client_socket)
+        wait_for_game(client_socket)
 
 
-def sendLoginStatus(socket, loginStatus):
+def send_login_status(socket, login_status):
     msg = ""
-    if loginStatus == -1:
+    if login_status == -1:
         msg = "-1##Wrong username or password. Please try again."
-    elif loginStatus == 1:
+    elif login_status == 1:
         msg = "1##Login successful!"
 
-    formatAndSend(socket, "login", msg)
+    format_and_send(socket, "login", msg)
+
+
 #    sendMsg = "login##" + str(loginStatus) + "##" + msg
 #    server_comm.sendToClient(socket, sendMsg)
 
-def sendSignupStatus(socket, signupStatus):
+def send_signup_status(socket, signup_status):
     msg = ""
-    if signupStatus == -1:
+    if signup_status == -1:
         msg = "-1##Username already exists. Please try again."
-    elif signupStatus == 1:
+    elif signup_status == 1:
         msg = "1##Signup successful!"
 
-    formatAndSend(socket, "signup", msg)
-#    sendMsg = "signup##" + str(signupStatus) + "##" + msg
-#    server_comm.sendToClient(socket, sendMsg)
+    format_and_send(socket, "signup", msg)
 
 
-def formatAndSend(socket, command, message):
+def format_and_send(socket, command, message):
     msg = command + "##" + message
     print("Sent to client: " + msg)
-    server_comm.sendToClient(socket, msg)
+    server_comm.send_to_client(socket, msg)
 
 
-def waitForGame(client_socket):
-    waitlist = server_comm.getWaitList()
-    if len(waitlist) > 0:
+def wait_for_game(client_socket):
+    wait_list = server_comm.get_wait_list()
 
-        firstUser = waitlist[0]
+    if len(wait_list) > 0:
+
+        first_user = wait_list[0]
 
         # Randomizes first player
-        firstP1 = str(random.randint(0,1))
+        first_p1 = str(random.randint(0, 1))
 
-        newThread = handleServerC4.c4ServerClass(firstUser, client_socket, firstP1)
-        newThread.start()
+        new_thread = handleServerC4.C4ServerClass(first_user, client_socket, first_p1)
+        new_thread.start()
 
         time.sleep(3)
 
-        if firstP1 == "1":
-            formatAndSend(firstUser, "startgame", "0")
-            formatAndSend(client_socket, "startgame", "1")
+        if first_p1 == "1":
+            format_and_send(first_user, "startgame", "0")
+            format_and_send(client_socket, "startgame", "1")
         else:
-            formatAndSend(firstUser, "startgame", "1")
-            formatAndSend(client_socket, "startgame", "0")
+            format_and_send(first_user, "startgame", "1")
+            format_and_send(client_socket, "startgame", "0")
 
         # Resets the list of currently waiting users
-        server_comm.setWaitList([])
+        server_comm.set_wait_list([])
 
     else:
-        waitlist.append(client_socket)
-        formatAndSend(client_socket, "inQueue", "You have been added to the queue")
-
+        wait_list.append(client_socket)
+        format_and_send(client_socket, "inQueue", "You have been added to the queue")

@@ -1,4 +1,4 @@
-import db
+from server import db
 from server import handleServerC4
 import server
 
@@ -13,42 +13,42 @@ def parse_client_msg(client_message, client_socket):
         username = split[1]
         password = split[2]
         email = split[3]
-        userData = (username, password, email)
+        user_data = (username, password, email)
 
-        db.create_user(userData)
+        db.create_user(user_data)
         return username
 
     if message_type == "login":
         username = split[2]
         password = split[3]
 
-        loginUserData = (username, password)
-        validUser = db.validate_user(loginUserData)
-        if validUser == 1:  # user exists
-            loginStatus = 1
+        login_user_data = (username, password)
+        valid_user = db.validate_user(login_user_data)
+        if valid_user == 1:  # user exists
+            login_status = 1
         else:
-            loginStatus = -1
+            login_status = -1
 
-        sendLoginStatus(client_socket, loginStatus)
+        send_login_status(client_socket, login_status)
         return
 
     if message_type == "game":
-        userList = server.userList()
-        server_socket = server.serverSocket()
+        user_list = server.user_list()
+        server_socket = server.server_socket()
 
-        otherUser = split[1]
-        otherSocket = userList[otherUser]
+        other_user = split[1]
+        other_socket = user_list[other_user]
 
-        handleServerC4.run(client_socket, otherSocket, server_socket)
+        handleServerC4.run(client_socket, other_socket, server_socket)
 
 
-def sendLoginStatus(socket, loginStatus):
+def send_login_status(socket, login_status):
     msg = ""
-    if loginStatus == -1:
+    if login_status == -1:
         msg = "Wrong username or password. Please try again."
-    elif loginStatus == 1:
+    elif login_status == 1:
         msg = "Login successful!"
-    sendMsg = "login##" + str(loginStatus) + "##" + msg
-    socket.send(bytes(sendMsg, 'utf-8'))
+    send_msg = "login##" + str(login_status) + "##" + msg
+    socket.send(bytes(send_msg, 'utf-8'))
 
 
