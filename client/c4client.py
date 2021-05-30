@@ -1,15 +1,15 @@
 import pygame as pg
 import sys
 from pygame.locals import *
-from client import client_logic
-from threading import Thread
+
 
 # Creates the board
 board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
          [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
          [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 screen = ""
-# Set turn yellow/red
+
+# Set turn by color (yellow/red)
 turn = 'yellow'
 msg = ''
 assigned = False
@@ -45,7 +45,7 @@ def start_pg():
     # Cap frames at 30
     fps = 30
 
-    # Track time
+    # Track time (future...)
     CLOCK = pg.time.Clock()
 
     # Set display
@@ -55,10 +55,8 @@ def start_pg():
 
 def game_initiating_window():
     global screen
+
     # Puts the cover image over the screen
-    # screen.blit(initiating_window, (0,0))
-    # pg.display.update()
-    # time.sleep(2)
     screen.fill(white)
 
     # draws the board
@@ -88,8 +86,6 @@ def draw_status():
 
     if not assigned:
         message = msg
-#        assigned = True
-
 
     # setting a font object
     font = pg.font.Font(None, 30)
@@ -109,7 +105,6 @@ def draw(row):
 
     check = check_empty_tile(row)
     col = check[1]
-
 
     row = int(row)
     row = row - 1
@@ -183,9 +178,7 @@ def set_player_move(col, row):
     col = int(col)
     row = int(row)
 
-
     board[row][col - 1] = turn
-
 
     if turn == "red":
         turn = "yellow"
@@ -197,14 +190,11 @@ def check_client_activity():
     global turn, winner, draw
     move = None
 
-
     while True:
-
         count = 0
         done = False
 
         while True:
-
             if not done:
                     for event in pg.event.get():
                             if event.type == QUIT:
@@ -218,15 +208,13 @@ def check_client_activity():
                                 print("Move is: " + str(move))
                                 if move != None:
                                     return move
-
-
             elif done:
                 if pg.event.get(eventtype=QUIT):
                     pg.quit()
                     sys.exit()
-
             elif move != None:
                 return move
+
 
 def get_turn():
     global turn
@@ -239,8 +227,6 @@ def set_turn(setTurn):
     turn = setTurn
 
 
-
 def set_message(setMessage):
     global msg
     msg = setMessage
-#    draw_status()

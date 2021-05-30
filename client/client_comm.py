@@ -15,8 +15,7 @@ class ClientThread(threading.Thread):
     lock = Lock()
     user = ""
 
-    def __init__(self, clientAddress, clientSocket):
-        self.clientAddress = clientAddress
+    def __init__(self, clientSocket):
         self.clientSocket = clientSocket
 
         threading.Thread.__init__(self)
@@ -62,5 +61,5 @@ def start_client_comm():
                                          "Oops... Unable to connect to server... \n\nError: " + err.strerror)
         exit(-1)
 
-    new_thread = ClientThread('1.1.1.1', client_socket)
+    new_thread = ClientThread(client_socket)
     new_thread.start()

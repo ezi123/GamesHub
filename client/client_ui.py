@@ -195,6 +195,7 @@ def show_login_msg_info(msg):
     global login_window
     messagebox.showinfo("Error", msg, parent=login_window)
 
-#general popuse messagebox
+
+# a message box for messages
 def show_message_box(title, message):
     messagebox.showerror(title, message)

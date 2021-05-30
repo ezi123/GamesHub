@@ -4,10 +4,10 @@ from client import client_logic, c4client
 
 class LaunchC4(Thread):
 
-    def __init__(self, firstTurn):
+    def __init__(self, first_turn):
         Thread.__init__(self)
 
-        self.myTurn = str(firstTurn)
+        self.myTurn = str(first_turn)
         if self.myTurn == "0":
             self.myTurn = "red"
         if self.myTurn == "1":
@@ -33,8 +33,8 @@ def start_client_comm_thread():
     new_board.start()
 
 
-def process_c4_server_message(servResp):
-    split = servResp.split("##")
+def process_c4_server_message(serv_resp):
+    split = serv_resp.split("##")
     split[0] = split[0].lower()
 
     if split[0] == "win":
