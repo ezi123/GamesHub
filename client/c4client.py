@@ -5,8 +5,7 @@ from pygame.locals import *
 
 # Creates the board
 board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+         [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 screen = ""
 
 # Set turn by color (yellow/red)
@@ -100,38 +99,38 @@ def draw_status():
     pg.display.update()
 
 
-def draw(row):
+def draw_board(col):
     global board, turn, screen
 
-    check = check_empty_tile(row)
-    col = check[1]
+    check = check_empty_tile(col)
+    row = check[1]
 
-    row = int(row)
-    row = row - 1
-    if row == 0:
+    col = int(col)
+    col = col - 1
+    if col == 0:
         posx = 15
-    elif row == 1:
+    elif col == 1:
         posx = 110
-    elif row == 2:
+    elif col == 2:
         posx = 200
-    elif row == 3:
+    elif col == 3:
         posx = 280
-    elif row == 4:
+    elif col == 4:
         posx = 360
-    elif row == 5:
+    elif col == 5:
         posx = 440
     else:
         posx = 530
 
-    if col == 0:
+    if row == 0:
         posy = 530
-    elif col == 1:
+    elif row == 1:
         posy = 440
-    elif col == 2:
+    elif row == 2:
         posy = 330
-    elif col == 3:
+    elif row == 3:
         posy = 210
-    elif col == 4:
+    elif row == 4:
         posy = 110
     else:
         posy = 30
@@ -143,7 +142,7 @@ def draw(row):
 
     pg.display.update()
 
-    set_player_move(row, col)
+    set_player_move(col, row)
     return
 
 
@@ -178,7 +177,7 @@ def set_player_move(col, row):
     col = int(col)
     row = int(row)
 
-    board[row][col - 1] = turn
+    board[row][col] = turn
 
     if turn == "red":
         turn = "yellow"
@@ -205,9 +204,11 @@ def check_client_activity():
                                 if turn != "red":
                                     continue
                                 move = get_player_move()
-                                print("Move is: " + str(move))
                                 if move != None:
+                                    print("Move is: " + str(move))
                                     return move
+                                else:
+                                    print("Invalid Move. Column is full")
             elif done:
                 if pg.event.get(eventtype=QUIT):
                     pg.quit()

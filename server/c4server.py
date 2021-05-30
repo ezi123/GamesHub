@@ -1,7 +1,6 @@
 # Creates the board
 board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+         [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 screen = ""
 # Set turn yellow/red
 turn = 'red'
@@ -38,15 +37,14 @@ def check_win():
     return False
 
 
-def set_player_move(move):
+def set_player_move(in_move):
     print("In setplayermove")
     global turn
-    added = False
-    move = int(move)
+    move = int(in_move)
     for x in range(len(board)):
-        if not added:
+        if board[x][move - 1] == ' ':
             board[x][move - 1] = turn
-            added = True
+            break
 
 
 def check_game_end():
