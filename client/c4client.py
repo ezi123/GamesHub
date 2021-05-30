@@ -10,7 +10,7 @@ screen = ""
 
 # Set turn by color (yellow/red)
 turn = 'yellow'
-msg = ''
+msg = 'Waiting for second player to join...'
 assigned = False
 
 # Store winner/draw
@@ -67,24 +67,27 @@ def game_initiating_window():
     for i in range(1, 6):
         pg.draw.line(screen, line_color, (0, height / 6 * i), (width, height / 6 * i), 7)
     draw_status()
-
+    pg.display.update()
 
 def draw_status():
     global draw, turn, msg, assigned, screen
 
     if assigned:
         if winner is None:
-            message = turn + "'s turn!"
+            if turn == 'yellow':
+                message = "It is player's 2 turn"
+            else:
+                message = "It is now your turn"
+            assigned = True
+        elif draw is True:
+            message = "The game ended in a draw!"
             assigned = True
         else:
             message = turn + " won!"
             assigned = True
-        if draw is True:
-            message = "The game ended in a draw!"
-            assigned = True
-
-    if not assigned:
+    else:
         message = msg
+        assigned = True
 
     # setting a font object
     font = pg.font.Font(None, 30)
@@ -96,7 +99,7 @@ def draw_status():
     screen.fill((0, 0, 0), (0, 600, 600, 100))
     text_rect = text.get_rect(center=(width / 2, 650))
     screen.blit(text, text_rect)
-    pg.display.update()
+#    pg.display.update()
 
 
 def draw_board(col):
@@ -140,10 +143,10 @@ def draw_board(col):
     else:
         screen.blit(yellow_img, (posx, posy))
 
-    pg.display.update()
-
     set_player_move(col, row)
-    return
+
+    draw_status()
+    pg.display.update()
 
 
 def get_player_move():
@@ -226,6 +229,10 @@ def set_turn(setTurn):
     global turn
     print("Client's turn is set to: " + setTurn)
     turn = setTurn
+
+    # show on screen that the game started
+    draw_status()
+    pg.display.update()
 
 
 def set_message(setMessage):

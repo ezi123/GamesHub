@@ -46,3 +46,5 @@ def process_c4_server_message(serv_resp):
 
     elif split[0] == "move":
         c4client.draw_board(split[1])
+
+
