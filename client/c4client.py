@@ -74,7 +74,7 @@ def draw_status():
     global draw, turn, msg, assigned, screen
 
     if assigned:
-        if not winner and not draw:
+        if not winner and not draw and not loser:
             if turn == 'yellow':
                 message = "It is player's 2 turn"
             else:
@@ -231,18 +231,20 @@ def end_game(status):
         winner = True
         turn = None
         draw_status()
+        pg.display.update()
 
     elif status == "lose":
         loser = True
         turn = None
         draw_status()
+        pg.display.update()
 
     elif status == "draw":
         draw = True
         turn = None
         draw_status()
+        pg.display.update()
 
-    pg.display.update()
 
 
 

@@ -47,7 +47,7 @@ def process_server_message(msg):
         c4client.set_message("Waiting for second player to connect...")
         return
 
-    elif message_type == "move" or message_type == "winner" or message_type == "draw":
+    elif message_type == "move" or message_type == "win" or message_type == "lose" or message_type == "draw":
         handleClientC4.process_c4_server_message(msg)
 
     elif message_type == "turn":
