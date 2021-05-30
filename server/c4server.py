@@ -47,10 +47,9 @@ def set_player_move(in_move):
             break
 
 
-def check_game_end():
+def check_game_end(count):
     global turn, winner
 
-    count = 0
     if count >= 6:
         if check_win():
             print("Player " + turn + " won!")

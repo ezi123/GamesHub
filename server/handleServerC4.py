@@ -12,6 +12,7 @@ class C4ServerClass(Thread):
 
     def run(self):
 
+        count = 0
         rand = random.randint(0, 1)
         turn = rand
         #        turn = rand = 1
@@ -38,7 +39,8 @@ class C4ServerClass(Thread):
                 c4server.set_player_move(split[2])
                 server_logic.format_and_send(self.client_socket_1, "move", split[2])
                 server_logic.format_and_send(self.client_socket_2, "move", split[2])
-                winner = c4server.check_game_end()
+                winner = c4server.check_game_end(count)
+                count = count + 1
 
                 if winner == "red":
                     if self.first_p1 == "0":

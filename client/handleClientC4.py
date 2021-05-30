@@ -39,10 +39,13 @@ def process_c4_server_message(serv_resp):
 
     if split[0] == "win":
         print("You win!!!")
+        c4client.end_game(split[0])
     elif split[0] == "lose":
         print("You lose :(")
+        c4client.end_game(split[0])
     elif split[0] == "draw":
         print("It's a draw!")
+        c4client.end_game(split[0])
 
     elif split[0] == "move":
         c4client.draw_board(split[1])

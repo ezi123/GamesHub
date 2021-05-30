@@ -14,8 +14,9 @@ msg = 'Waiting for second player to join...'
 assigned = False
 
 # Store winner/draw
-winner = None
-draw = None
+winner = False
+loser = False
+draw = False
 
 # Size of board in pixels
 width = 600
@@ -73,7 +74,7 @@ def draw_status():
     global draw, turn, msg, assigned, screen
 
     if assigned:
-        if winner is None:
+        if not winner and not draw:
             if turn == 'yellow':
                 message = "It is player's 2 turn"
             else:
@@ -82,8 +83,11 @@ def draw_status():
         elif draw is True:
             message = "The game ended in a draw!"
             assigned = True
+        elif winner:
+            message = "You have won!!!!"
+            assigned = True
         else:
-            message = turn + " won!"
+            message = "Sadly you've lost, better luck next time!"
             assigned = True
     else:
         message = msg
@@ -157,7 +161,9 @@ def get_player_move():
             x = i
             break
     check = check_empty_tile(x)
-    if check[0]:
+    print("printing check[0]")
+    print(check[0])
+    if check[0] is True:
         return x
     else:
         return None
@@ -171,7 +177,7 @@ def check_empty_tile(move):
             print(x)
             print(move - 1)
             return True, x
-    return False
+    return False, None
 
 
 def set_player_move(col, row):
@@ -218,6 +224,28 @@ def check_client_activity():
                     sys.exit()
             elif move != None:
                 return move
+
+def end_game(status):
+    global winner, loser, draw, turn
+    if status == "win":
+        winner = True
+        turn = None
+        draw_status()
+
+    elif status == "lose":
+        loser = True
+        turn = None
+        draw_status()
+
+    elif status == "draw":
+        draw = True
+        turn = None
+        draw_status()
+
+    pg.display.update()
+
+
+
 
 
 def get_turn():
