@@ -44,8 +44,7 @@ def send_to_server(out_data):
     global client_socket
 
     client_socket.sendall(bytes(out_data, 'UTF-8'))
-    if out_data == 'bye':
-        client_socket.close()
+
 
 
 def start_client_comm():
