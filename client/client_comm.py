@@ -65,8 +65,11 @@ def start_client_comm():
 
 def get_server_ip():
     try:
+
+        fp = open('../config.ini')
         config = configparser.ConfigParser()
         config.read('../config.ini')
+        config.read_file(fp)
 
         server_ip = config.get('NETWORK', 'server_ip')
         server_port = config.get('NETWORK', 'server_port')
@@ -78,9 +81,6 @@ def get_server_ip():
         client.client_ui.show_message_box("GamesHub - Error", "Server IP and Port are not configured. \n\nPlease check the documentation for details.")
         exit(0)
 
-    if server_ip == '127.0.0.1':
-        result = client.client_ui.show_yes_no_message_box("GamesHub", "Connect to local server? If not, please edit the config.ini file.")
-        if result == "no":
-            exit(0)
+    fp.close()
 
     return server_ip, server_port
