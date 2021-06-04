@@ -6,4 +6,3 @@ if __name__ == '__main__':
 
     # open the login UI
     client_ui.open_login_ui()
-
