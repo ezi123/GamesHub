@@ -46,6 +46,7 @@ def process_c4_server_message(serv_resp):
     elif split[0] == "draw":
         print("It's a draw!")
         client_c4.end_game(split[0])
+
     elif split[0] == "move":
         client_c4.draw_board(split[1])
 
