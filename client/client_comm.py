@@ -3,7 +3,8 @@ import threading
 from threading import Lock
 from client import client_logic
 import configparser
-from client import client_ui
+
+import client.client_ui
 
 gl_client_socket = None
 
@@ -33,7 +34,7 @@ class ClientThread(threading.Thread):
             except socket.error as err:
                 print("Caught exception socket.error: " + err.strerror)
                 self.client_socket.close()
-                client_ui.show_message_box("Error", "Oops... We lost connection to server. Please restart.")
+                client.client_ui.show_message_box("Error", "Oops... We lost connection to server. Please restart.")
                 self.client_socket.close()
 
             print("from server: ", msg)
@@ -55,7 +56,7 @@ def start_client_comm():
         gl_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         gl_client_socket.connect((server_address_result[0], int(server_address_result[1])))
     except socket.error as err:
-        client_ui.show_message_box("Error", "Oops... Unable to connect to server... \n\nError: " + err.strerror)
+        client.client_ui.show_message_box("Error", "Oops... Unable to connect to server... \n\nError: " + err.strerror)
         exit(-1)
 
     new_thread = ClientThread(gl_client_socket)
@@ -64,20 +65,22 @@ def start_client_comm():
 
 def get_server_ip():
     try:
-        fp = open('../config.ini')
         config = configparser.ConfigParser()
-        config.read_file(fp)
+        config.read('../config.ini')
 
         server_ip = config.get('NETWORK', 'server_ip')
         server_port = config.get('NETWORK', 'server_port')
-
     except configparser.NoSectionError or configparser.NoOptionError:
-        client_ui.show_message_box("GamesHub - Error", "Error reading config.ini file. \n\nPlease check the documentation for details.")
+        client.client_ui.show_message_box("GamesHub - Error", "Error reading config.ini file. \n\nPlease check the documentation for details.")
         exit(0)
 
     if server_ip == '' or server_port == '':
-        client_ui.show_message_box("GamesHub - Error", "Server IP and Port are not configured. \n\nPlease check the documentation for details.")
+        client.client_ui.show_message_box("GamesHub - Error", "Server IP and Port are not configured. \n\nPlease check the documentation for details.")
         exit(0)
 
-    fp.close()
+    if server_ip == '127.0.0.1':
+        result = client.client_ui.show_yes_no_message_box("GamesHub", "Connect to local server? If not, please edit the config.ini file.")
+        if result == "no":
+            exit(0)
+
     return server_ip, server_port
