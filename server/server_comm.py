@@ -1,6 +1,7 @@
 import socket, threading, os
 from threading import Thread, Lock
 from server import server_logic
+import configparser
 
 wait_list = []
 
@@ -39,14 +40,19 @@ class ClientThread(threading.Thread):
 
 def start_server():
     localhost = "127.0.0.1"
-    port = 5050
+    server_port = int(get_server_port())
 
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server.bind((localhost, port))
+        server.bind((localhost, server_port))
+
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+
         print("Server started")
-        print("Waiting for client request..")
+        print("Server IP address is: " + local_ip)
+        print("Waiting for client request on port:" + str(server_port))
     except socket.error as err:
         print('Unable to start server: ' + err.strerror)
         os._exit()
@@ -70,3 +76,20 @@ def get_wait_list():
 def set_wait_list(waiting_list):
     global wait_list
     wait_list = waiting_list
+
+
+def get_server_port():
+    try:
+        config = configparser.ConfigParser()
+        config.read('../config.ini')
+
+        server_port = config.get('NETWORK', 'server_port')
+    except configparser.NoSectionError or configparser.NoOptionError:
+        print("Error reading config.ini file. Please check the documentation for details.")
+        exit(0)
+
+    if server_port == '':
+        print("Server Port is not configured. Please check the documentation for details.")
+        exit(0)
+
+    return server_port

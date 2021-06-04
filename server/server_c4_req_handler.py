@@ -1,5 +1,5 @@
-from server import db
-from server import handleServerC4
+from server import server_db
+from server import server_c4_handler
 import server
 
 
@@ -15,7 +15,7 @@ def parse_client_msg(client_message, client_socket):
         email = split[3]
         user_data = (username, password, email)
 
-        db.create_user(user_data)
+        server_db.create_user(user_data)
         return username
 
     if message_type == "login":
@@ -23,7 +23,7 @@ def parse_client_msg(client_message, client_socket):
         password = split[3]
 
         login_user_data = (username, password)
-        valid_user = db.validate_user(login_user_data)
+        valid_user = server_db.validate_user(login_user_data)
         if valid_user == 1:  # user exists
             login_status = 1
         else:
@@ -39,7 +39,7 @@ def parse_client_msg(client_message, client_socket):
         other_user = split[1]
         other_socket = user_list[other_user]
 
-        handleServerC4.run(client_socket, other_socket, server_socket)
+        server_c4_handler.run(client_socket, other_socket, server_socket)
 
 
 def send_login_status(socket, login_status):

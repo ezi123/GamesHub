@@ -1,5 +1,5 @@
 import random
-from server import server_logic, c4server
+from server import server_logic, server_c4
 from threading import Thread
 
 
@@ -35,10 +35,10 @@ class C4ServerClass(Thread):
             split = data.split("##")
             print(split[0])
             if split[0] == "move":
-                c4server.set_player_move(split[2])
+                server_c4.set_player_move(split[2])
                 server_logic.format_and_send(self.client_socket_1, "move", split[2])
                 server_logic.format_and_send(self.client_socket_2, "move", split[2])
-                winner = c4server.check_game_end(count)
+                winner = server_c4.check_game_end(count)
                 count = count + 1
 
                 if winner == "red":

@@ -1,4 +1,4 @@
-from server import db, server_comm, handleServerC4
+from server import server_db, server_comm, server_c4_handler
 import random
 import time
 
@@ -15,7 +15,7 @@ def parse_client_msg(client_socket, client_message):
         password = split[6]
         user_data = (first_name, last_name, username, password, email)
 
-        valid_user = db.create_user(user_data)
+        valid_user = server_db.create_user(user_data)
         if valid_user == -1:  # userName exists
             signup_status = -1
         else:
@@ -29,7 +29,7 @@ def parse_client_msg(client_socket, client_message):
         password = split[3]
 
         login_user_data = (username, password)
-        valid_user = db.validate_user(login_user_data)
+        valid_user = server_db.validate_user(login_user_data)
         if valid_user == 1:  # user exists
             login_status = 1
         else:
@@ -81,7 +81,7 @@ def wait_for_game(client_socket):
         # Randomizes first player
         first_p1 = str(random.randint(0, 1))
 
-        new_thread = handleServerC4.C4ServerClass(first_user, client_socket, first_p1)
+        new_thread = server_c4_handler.C4ServerClass(first_user, client_socket, first_p1)
         new_thread.start()
 
         time.sleep(3)

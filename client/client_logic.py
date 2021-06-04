@@ -1,4 +1,4 @@
-from client import client_comm, client_ui, handleClientC4, c4client
+from client import client_comm, client_ui, client_c4_handler, client_c4
 
 clientId = "1"
 
@@ -31,7 +31,7 @@ def process_server_message(msg):
         return_msg = split[2]
         if return_code == '1':
             client_ui.close_login_ui()
-            handleClientC4.start_client_comm_thread()
+            client_c4_handler.start_client_comm_thread()
         else:
             client_ui.show_login_msg_info(return_msg)
 
@@ -44,11 +44,11 @@ def process_server_message(msg):
             client_ui.show_signup_msg_info(return_msg)
 
     elif message_type == "inqueue":
-        c4client.set_message("Waiting for second player to connect...")
+        client_c4.set_message("Waiting for second player to connect...")
         return
 
     elif message_type == "move" or message_type == "win" or message_type == "lose" or message_type == "draw":
-        handleClientC4.process_c4_server_message(msg)
+        client_c4_handler.process_c4_server_message(msg)
 
     elif message_type == "turn":
-        c4client.set_turn(split[1])
+        client_c4.set_turn(split[1])

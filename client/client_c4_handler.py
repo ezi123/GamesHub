@@ -1,5 +1,5 @@
 from threading import Thread
-from client import client_logic, c4client
+from client import client_logic, client_c4
 
 
 class LaunchC4(Thread):
@@ -14,15 +14,15 @@ class LaunchC4(Thread):
             self.myTurn = "yellow"
 
     def run(self):
-        c4client.start_pg()
+        client_c4.start_pg()
         print(self.myTurn)
-        c4client.game_initiating_window()
+        client_c4.game_initiating_window()
 
         msg = "startGame"
         client_logic.formats_server_msg(msg, "")
 
         while True:
-            move = c4client.check_client_activity()
+            move = client_c4.check_client_activity()
             move = str(move)
             print("sending move: " + move)
             client_logic.formats_server_msg("move", move)
@@ -39,15 +39,15 @@ def process_c4_server_message(serv_resp):
 
     if split[0] == "win":
         print("You win!!!")
-        c4client.end_game(split[0])
+        client_c4.end_game(split[0])
     elif split[0] == "lose":
         print("You lose :(")
-        c4client.end_game(split[0])
+        client_c4.end_game(split[0])
     elif split[0] == "draw":
         print("It's a draw!")
-        c4client.end_game(split[0])
+        client_c4.end_game(split[0])
 
     elif split[0] == "move":
-        c4client.draw_board(split[1])
+        client_c4.draw_board(split[1])
 
 

@@ -199,3 +199,8 @@ def show_login_msg_info(msg):
 # a message box for messages
 def show_message_box(title, message):
     messagebox.showerror(title, message)
+
+
+# a yes/no message box for messages
+def show_yes_no_message_box(title, message):
+    return messagebox.askquestion(title, message)
