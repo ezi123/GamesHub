@@ -3,6 +3,7 @@ import threading
 from threading import Lock
 from client import client_logic
 import configparser
+import sys
 
 import client.client_ui
 
@@ -36,6 +37,8 @@ class ClientThread(threading.Thread):
                 self.client_socket.close()
                 client.client_ui.show_message_box("Error", "Oops... We lost connection to server. Please restart.")
                 self.client_socket.close()
+                exit(-1)
+                sys.exit()
 
             print("from server: ", msg)
             client_logic.process_server_message(msg)
