@@ -140,7 +140,7 @@ def login():
         return "login", username, password
 
 
-def open_login_ui():
+def create_login_window():
     global login_window
 
     login_window = Tk()
@@ -182,6 +182,13 @@ def open_login_ui():
     sign_up_btn = Button(login_window, text="Signup", font='Verdana 10 bold', command=open_signup_ui)
     sign_up_btn.place(x=320, y=340)
 
+    login_window.withdraw()
+
+
+def open_login_ui():
+    global login_window
+
+    login_window.deiconify()
     login_window.mainloop()
 
 
@@ -198,10 +205,12 @@ def show_login_msg_info(msg):
 
 # a message box for messages
 def show_message_box(title, message):
-    messagebox.showerror(title, message)
+    global login_window
+#    login_window.showerror(title, message)
+    messagebox.showerror(title, message, default='ok', parent=login_window)
 
 
 # a yes/no message box for messages
 def show_yes_no_message_box(title, message):
-    return messagebox.askquestion(title, message)
-
+    global login_window
+    return messagebox.askquestion(title, message, default='yes', parent=login_window)
