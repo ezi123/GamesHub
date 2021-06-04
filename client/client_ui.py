@@ -43,7 +43,7 @@ def signup():
 # start signup window
 def open_signup_ui():
     global signupWin
-    signupWin = Toplevel()
+    signupWin = Tk()
     signupWin.title("GameHub - Register")
     signupWin.maxsize(width=430, height=360)
     signupWin.minsize(width=430, height=360)
@@ -204,4 +204,3 @@ def show_message_box(title, message):
 # a yes/no message box for messages
 def show_yes_no_message_box(title, message):
     return messagebox.askquestion(title, message)
-
