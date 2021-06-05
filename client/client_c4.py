@@ -19,8 +19,8 @@ loser = False
 draw = False
 
 # Size of board in pixels
-width = 600
-height = 600
+width = 630
+height = 630
 
 # Background color, divider lines
 white = (255, 255, 255)
@@ -121,8 +121,8 @@ def draw_status():
     text = font.render(message, 1, (255, 255, 255))
 
     # copy the rendered message onto the board, creating a small block at the bottom of the main display
-    screen.fill((0, 0, 0), (0, 600, 600, 100))
-    text_rect = text.get_rect(center=(width / 2, 650))
+    screen.fill((0, 0, 0), (0, 630, 630, 100))
+    text_rect = text.get_rect(center=(width / 2, 680))
     screen.blit(text, text_rect)
 #    pg.display.update()
 
@@ -135,39 +135,16 @@ def draw_board(col):
 
     col = int(col)
     col = col - 1
-    if col == 0:
-        posx = 15
-    elif col == 1:
-        posx = 110
-    elif col == 2:
-        posx = 200
-    elif col == 3:
-        posx = 280
-    elif col == 4:
-        posx = 360
-    elif col == 5:
-        posx = 440
-    else:
-        posx = 530
+    posx = (col * 90) + 20
 
-    if row == 0:
-        posy = 530
-    elif row == 1:
-        posy = 440
-    elif row == 2:
-        posy = 330
-    elif row == 3:
-        posy = 210
-    elif row == 4:
-        posy = 110
-    else:
-        posy = 30
+    posy = 540 - (row * 107) + 20
+
     if turn == "red":
         screen.blit(red_img, (posx, posy))
-
     else:
         screen.blit(yellow_img, (posx, posy))
 
+    print("Printing in x,y = " + str(posx), ", " + str(posy))
     set_player_move(col, row)
 
     draw_status()
