@@ -94,7 +94,7 @@ def wait_for_game(client_socket):
             format_and_send(client_socket, "startgame", "0")
 
         # Resets the list of currently waiting users
-        server_comm.set_wait_list([])
+        server_comm.clear_wait_list()
 
     else:
         wait_list.append(client_socket)

@@ -77,6 +77,10 @@ def set_wait_list(waiting_list):
     global wait_list
     wait_list = waiting_list
 
+def clear_wait_list():
+    global wait_list
+    wait_list.clear()
+
 
 def get_server_port():
     try:
