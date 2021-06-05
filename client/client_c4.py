@@ -33,8 +33,8 @@ yellow_img = pg.image.load("../res/c4_yellow_piece.png")
 
 # Scales the image to the size of the board
 initiating_window = pg.transform.scale(initiating_window, (width, height + 100))
-red_img = pg.transform.scale(red_img, (50, 50))
-yellow_img = pg.transform.scale(yellow_img, (50, 50))
+red_img = pg.transform.scale(red_img, (40, 40))
+yellow_img = pg.transform.scale(yellow_img, (40, 40))
 
 
 def start_pg():
@@ -135,8 +135,9 @@ def draw_board(col):
 
     col = int(col)
     col = col - 1
+
     if col == 0:
-        posx = 15
+        posx = 20
     elif col == 1:
         posx = 110
     elif col == 2:
@@ -144,24 +145,14 @@ def draw_board(col):
     elif col == 3:
         posx = 280
     elif col == 4:
-        posx = 360
+        posx = 370
     elif col == 5:
-        posx = 440
+        posx = 450
     else:
         posx = 530
 
-    if row == 0:
-        posy = 530
-    elif row == 1:
-        posy = 440
-    elif row == 2:
-        posy = 330
-    elif row == 3:
-        posy = 210
-    elif row == 4:
-        posy = 110
-    else:
-        posy = 30
+    posy = 530 - (row*100)
+
     if turn == "red":
         screen.blit(red_img, (posx, posy))
 
