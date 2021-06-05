@@ -35,6 +35,8 @@ def start_client_comm_thread():
 
 
 def process_c4_server_message(serv_resp):
+    msg = ""
+
     split = serv_resp.split("##")
     split[0] = split[0].lower()
 

@@ -3,8 +3,6 @@ import threading
 from threading import Lock
 from client import client_logic
 import configparser
-import os
-
 import client.client_ui
 
 gl_client_socket = None
@@ -17,8 +15,8 @@ class ClientThread(threading.Thread):
     lock = Lock()
     user = ""
 
-    def __init__(self, clientSocket):
-        self.client_socket = clientSocket
+    def __init__(self, new_client_socket):
+        self.client_socket = new_client_socket
 
         threading.Thread.__init__(self)
 
@@ -37,7 +35,7 @@ class ClientThread(threading.Thread):
                 self.client_socket.close()
                 client.client_ui.show_message_box("Error", "Oops... We lost connection to server. Please restart.")
                 self.client_socket.close()
-                os._exit(0)
+                exit(-1)
 
             print("from server: ", msg)
             client_logic.process_server_message(msg)
@@ -66,6 +64,8 @@ def start_client_comm():
 
 
 def get_server_ip():
+    server_ip = server_port = ""
+
     try:
         config = configparser.ConfigParser()
         config.read('../config.ini')
@@ -73,11 +73,13 @@ def get_server_ip():
         server_ip = config.get('NETWORK', 'server_ip')
         server_port = config.get('NETWORK', 'server_port')
     except configparser.NoSectionError or configparser.NoOptionError:
-        client.client_ui.show_message_box("GamesHub - Error", "Error reading config.ini file. \n\nPlease check the documentation for details.")
+        client.client_ui.show_message_box("GamesHub - Error", "Error reading config.ini file. \n\nPlease check the "
+                                                              "documentation for details.")
         exit(0)
 
     if server_ip == '' or server_port == '':
-        client.client_ui.show_message_box("GamesHub - Error", "Server IP and Port are not configured. \n\nPlease check the documentation for details.")
+        client.client_ui.show_message_box("GamesHub - Error", "Server IP and Port are not configured. \n\nPlease "
+                                                              "check the documentation for details.")
         exit(0)
 
     return server_ip, server_port

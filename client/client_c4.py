@@ -2,10 +2,9 @@ import pygame as pg
 import sys
 from pygame.locals import *
 
-
 # Creates the board
 board = None
-screen = ""
+screen = None
 
 # Set turn by color (yellow/red)
 turn = 'yellow'
@@ -49,11 +48,8 @@ def start_pg():
         # Starting up pygame
         pg.init()
 
-        # Cap frames at 30
-        fps = 30
-
         # Track time (future...)
-        CLOCK = pg.time.Clock()
+        pg.time.Clock()
 
         # Set display
         screen = pg.display.set_mode((width, height + 100), 0, 32)
@@ -91,6 +87,7 @@ def game_initiating_window():
     draw_status()
     pg.display.update()
 
+
 def draw_status():
     global draw, turn, msg, assigned, screen
 
@@ -118,12 +115,14 @@ def draw_status():
     font = pg.font.Font(None, 30)
 
     # setting the font properties
-    text = font.render(message, 1, (255, 255, 255))
+    text = font.render(message, True, (255, 255, 255))
 
     # copy the rendered message onto the board, creating a small block at the bottom of the main display
     screen.fill((0, 0, 0), (0, 630, 630, 100))
     text_rect = text.get_rect(center=(width / 2, 680))
     screen.blit(text, text_rect)
+
+
 #    pg.display.update()
 
 
@@ -135,6 +134,7 @@ def draw_board(col):
 
     col = int(col)
     col = col - 1
+
     posx = (col * 90) + 20
 
     posy = 540 - (row * 107) + 20
@@ -180,7 +180,7 @@ def check_empty_tile(move):
 
 def set_player_move(col, row):
     global turn
-    added = False
+
     col = int(col)
     row = int(row)
 
@@ -197,31 +197,31 @@ def check_client_activity():
     move = None
 
     while True:
-        count = 0
         done = False
 
         while True:
             if not done:
-                    for event in pg.event.get():
-                            if event.type == QUIT:
-                                pg.quit()
-                                sys.exit()
-                            elif event.type == MOUSEBUTTONDOWN:
-                                print("got Turn mouse event. Turn is: " + str(turn))
-                                if turn != "red":
-                                    continue
-                                move = get_player_move()
-                                if move != None:
-                                    print("Move is: " + str(move))
-                                    return move
-                                else:
-                                    print("Invalid Move. Column is full")
+                for event in pg.event.get():
+                    if event.type == QUIT:
+                        pg.quit()
+                        sys.exit()
+                    elif event.type == MOUSEBUTTONDOWN:
+                        print("got Turn mouse event. Turn is: " + str(turn))
+                        if turn != "red":
+                            continue
+                        move = get_player_move()
+                        if move is not None:
+                            print("Move is: " + str(move))
+                            return move
+                        else:
+                            print("Invalid Move. Column is full")
             elif done:
                 if pg.event.get(eventtype=QUIT):
                     pg.quit()
                     sys.exit()
-            elif move != None:
+            elif move is not None:
                 return move
+
 
 def end_game(status):
     global winner, loser, draw, turn
@@ -249,16 +249,16 @@ def get_turn():
     return turn
 
 
-def set_turn(setTurn):
+def set_turn(current_turn):
     global turn
-    print("Client's turn is set to: " + setTurn)
-    turn = setTurn
+    print("Client's turn is set to: " + current_turn)
+    turn = current_turn
 
     # show on screen that the game started
     draw_status()
     pg.display.update()
 
 
-def set_message(setMessage):
+def set_message(current_message):
     global msg
-    msg = setMessage
+    msg = current_message

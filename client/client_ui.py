@@ -10,11 +10,10 @@ login_window = None
 signupWin = None
 
 
-# Signup 
-
+# Signup
 def signup():
     # Make a regular expression
-    # for validating an Email
+    # for validating an Email address
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
 
     global signupWin
