@@ -53,7 +53,7 @@ def process_c4_server_message(serv_resp):
         msg = "It's a draw!"
         client_c4.end_game(split[0])
 
-    if client_ui.show_yes_no_message_box("Game Ended", msg + "\n\nDo you want to play again?"):
-        print("yes")
+    if client_ui.show_yes_no_message_box("Game Ended", msg + "\n\nDo you want to play again?") == "yes":
+        print("restarting game")
         client_comm.start_client_comm()
         start_client_comm_thread()

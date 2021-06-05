@@ -1,5 +1,5 @@
 import pygame as pg
-import sys
+import os
 from pygame.locals import *
 
 # Creates the board
@@ -204,7 +204,7 @@ def check_client_activity():
                 for event in pg.event.get():
                     if event.type == QUIT:
                         pg.quit()
-                        sys.exit()
+                        os._exit(0)
                     elif event.type == MOUSEBUTTONDOWN:
                         print("got Turn mouse event. Turn is: " + str(turn))
                         if turn != "red":
@@ -218,7 +218,7 @@ def check_client_activity():
             elif done:
                 if pg.event.get(eventtype=QUIT):
                     pg.quit()
-                    sys.exit()
+                    os._exit(0)
             elif move is not None:
                 return move
 
