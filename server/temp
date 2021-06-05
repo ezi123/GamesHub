@@ -40,8 +40,14 @@ def check_game_end(count, turn, board):
         if check_win(board):
             print("Player " + turn + " won!")
             winner = turn
+<<<<<<< HEAD
             return winner
-        
+
+=======
+            print("resetting game")
+            reset_game()
+            return turn
+>>>>>>> 5ecf26e2bf24fd618b41d8d5027c9be4d8b931c0
     if count >= 41:
         print("It's a tie!")
         reset_game()
