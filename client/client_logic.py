@@ -10,6 +10,7 @@ def formats_server_msg(operation, operation_data):
     global clientId
     out_str = operation + "##" + clientId + "##" + operation_data
     client_comm.send_to_server(out_str)
+    print("Sent to server: " + out_str)
     return out_str
 
 

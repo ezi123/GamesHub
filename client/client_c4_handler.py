@@ -1,5 +1,5 @@
 from threading import Thread
-from client import client_logic, client_c4
+from client import client_logic, client_c4, client_ui, client_comm
 
 
 class LaunchC4(Thread):
@@ -29,6 +29,7 @@ class LaunchC4(Thread):
 
 
 def start_client_comm_thread():
+    print("Starting a new game")
     new_board = LaunchC4(1)
     new_board.start()
 
@@ -37,17 +38,20 @@ def process_c4_server_message(serv_resp):
     split = serv_resp.split("##")
     split[0] = split[0].lower()
 
-    if split[0] == "win":
-        print("You win!!!")
+    if split[0] == "move":
+        client_c4.draw_board(split[1])
+        return
+    elif split[0] == "win":
+        msg = "You win!!!"
         client_c4.end_game(split[0])
     elif split[0] == "lose":
-        print("You lose :(")
+        msg = "You lost :("
         client_c4.end_game(split[0])
     elif split[0] == "draw":
-        print("It's a draw!")
+        msg = "It's a draw!"
         client_c4.end_game(split[0])
 
-    elif split[0] == "move":
-        client_c4.draw_board(split[1])
-
-
+    if client_ui.show_yes_no_message_box("Game Ended", msg + "\n\nDo you want to play again?"):
+        print("yes")
+        client_comm.start_client_comm()
+        start_client_comm_thread()

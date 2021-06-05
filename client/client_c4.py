@@ -4,14 +4,14 @@ from pygame.locals import *
 
 
 # Creates the board
-board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+board = None
 screen = ""
 
 # Set turn by color (yellow/red)
 turn = 'yellow'
 msg = 'Waiting for second player to join...'
 assigned = False
+init = True
 
 # Store winner/draw
 winner = False
@@ -38,19 +38,40 @@ yellow_img = pg.transform.scale(yellow_img, (50, 50))
 
 
 def start_pg():
-    global screen
-    # Starting up pygame
-    pg.init()
+    global screen, init, board
 
-    # Cap frames at 30
-    fps = 30
+    board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 
-    # Track time (future...)
-    CLOCK = pg.time.Clock()
+    if init:
+        # Starting up pygame
+        pg.init()
 
-    # Set display
-    screen = pg.display.set_mode((width, height + 100), 0, 32)
-    pg.display.set_caption("Connect Four")
+        # Cap frames at 30
+        fps = 30
+
+        # Track time (future...)
+        CLOCK = pg.time.Clock()
+
+        # Set display
+        screen = pg.display.set_mode((width, height + 100), 0, 32)
+        pg.display.set_caption("Connect Four")
+
+        init = False
+
+    else:
+        global turn, msg, assigned, winner, loser, draw
+        # Set turn by color (yellow/red)
+        turn = 'yellow'
+        msg = 'Waiting for second player to join...'
+        assigned = False
+
+        # Store winner/draw
+        winner = False
+        loser = False
+        draw = False
 
 
 def game_initiating_window():
@@ -244,10 +265,6 @@ def end_game(status):
         turn = None
         draw_status()
         pg.display.update()
-
-
-
-
 
 
 def get_turn():
