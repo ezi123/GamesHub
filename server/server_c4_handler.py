@@ -10,19 +10,35 @@ class C4ServerClass(Thread):
         self.client_socket_2 = client_socket_2
         self.first_p1 = first_p1
 
+     # Creates the board
+        self.board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+
+        # Set turn yellow/red
+        # self.turn = 'red'
+
+        # Store winner/draw
+        self.winner = None
+        self.draw = None
+
     def run(self):
 
         count = 0
         turn = self.first_p1
+
         #        turn = rand = 1
         if turn == "0":
             print("Sending Turn to player 1")
             server_logic.format_and_send(self.client_socket_1, "turn", "red")
             server_logic.format_and_send(self.client_socket_2, "turn", "yellow")
+            turn_color = "red"
         else:
             print("Sending Turn to player 2")
             server_logic.format_and_send(self.client_socket_2, "turn", "red")
             server_logic.format_and_send(self.client_socket_1, "turn", "yellow")
+            turn_color = "yellow"
 
         print("In handleServerC4")
         while True:
@@ -34,11 +50,12 @@ class C4ServerClass(Thread):
             print("Turn = " + str(turn) + ". Data recieced: " + data)
             split = data.split("##")
             print(split[0])
+
             if split[0] == "move":
-                server_c4.set_player_move(split[2])
+                server_c4.set_player_move(split[2], turn_color, self.board)
                 server_logic.format_and_send(self.client_socket_1, "move", split[2])
                 server_logic.format_and_send(self.client_socket_2, "move", split[2])
-                winner = server_c4.check_game_end(count)
+                winner = server_c4.check_game_end(count, turn_color, self.board)
                 count = count + 1
 
                 if winner == "red":
@@ -68,3 +85,8 @@ class C4ServerClass(Thread):
                     turn = "0"
                 else:
                     turn = "1"
+
+                if turn_color == "yellow":
+                    turn_color = "red"
+                else:
+                    turn_color = "yellow"
