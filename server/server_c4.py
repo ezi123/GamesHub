@@ -54,9 +54,12 @@ def check_game_end(count):
         if check_win():
             print("Player " + turn + " won!")
             winner = turn
-            return winner
+            print("resetting game")
+            reset_game()
+            return turn
     if count >= 41:
         print("It's a tie!")
+        reset_game()
         return "draw"
 
     if turn == "red":
@@ -66,3 +69,17 @@ def check_game_end(count):
     count += 1
 
     return None
+
+def reset_game():
+    global board, screen, turn, winner, draw
+    board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+             [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+    screen = ""
+    # Set turn yellow/red
+    turn = 'red'
+
+    # Store winner/draw
+    winner = None
+    draw = None
